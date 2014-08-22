@@ -1,4 +1,4 @@
 Array
 =====
 
-** TODO: Add description **
+An Elixir wrapper for Erlang's array.
