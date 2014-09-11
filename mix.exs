@@ -5,6 +5,7 @@ defmodule Array.Mixfile do
     [app: :array,
      version: "0.0.1",
      elixir: "~> 1.0.0",
+     description: "An elixir wrapper for Erlang's array.",
      package: package,
      deps: deps]
   end
