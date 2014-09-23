@@ -450,7 +450,6 @@ defmodule ArrayTest do
   end
 
   test "Enumerable.reduce" do
-    a = Array.from_list([1,2,3])
     sum = Enum.reduce(Array.from_list([1,2,3]), 0, fn(x, acc) -> x + acc end)
     assert 6 == sum
   end
