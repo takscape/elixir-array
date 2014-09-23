@@ -1,4 +1,6 @@
 /_build
+/docs
 /deps
 erl_crash.dump
+mix.lock
 *.ez

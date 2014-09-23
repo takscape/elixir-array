@@ -14,7 +14,8 @@ arr = Array.new()
 arr = Array.set(arr, 0, 100)
 
 # Access by indices
-arr[0]
+arr[0] # -> 0
+arr[1000] # -> nil
 
 # Convert from/to list
 Array.from_list([1,2,3,4,5])

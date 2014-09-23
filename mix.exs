@@ -3,8 +3,8 @@ defmodule Array.Mixfile do
 
   def project do
     [app: :array,
-     version: "0.0.1",
-     elixir: "~> 1.0.0",
+     version: "1.0.0",
+     elixir: ">= 1.0.0",
      description: "An elixir wrapper for Erlang's array.",
      package: package,
      deps: deps]
@@ -27,7 +27,8 @@ defmodule Array.Mixfile do
   #
   # Type `mix help deps` for more examples and options
   defp deps do
-    []
+    [{:earmark, ">= 0.0.0"},
+     {:ex_doc, "~> 0.6", only: :dev}]
   end
 
   defp package do
