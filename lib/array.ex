@@ -28,14 +28,14 @@ defmodule Array do
   `options` is a single term or a list of terms, selected from the following:
 
   * `n : non_neg_integer` or `{:size, n : non_neg_integer}`
-    * Specifies the initial size of the array; this also implies `{:fixed, true}`.
-      If `n` is not a nonnegative integer, the call raises `ArgumentError`.
+      * Specifies the initial size of the array; this also implies `{:fixed, true}`.
+        If `n` is not a nonnegative integer, the call raises `ArgumentError`.
   * `:fixed` or `{:fixed, true}`
-    * Creates a fixed-size array.
+      * Creates a fixed-size array.
   * `{:fixed, false}`
-    * Creates an extendible (non fixed-size) array.
+      * Creates an extendible (non fixed-size) array.
   * `{:default, value}`
-    * Sets the default value for the array to `value`.
+      * Sets the default value for the array to `value`.
   """
   @spec new(opts) :: t
   def new(options) do
