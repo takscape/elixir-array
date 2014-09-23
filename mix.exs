@@ -3,9 +3,9 @@ defmodule Array.Mixfile do
 
   def project do
     [app: :array,
-     version: "1.0.0",
+     version: "1.0.1",
      elixir: ">= 1.0.0",
-     description: "An elixir wrapper for Erlang's array.",
+     description: "An elixir wrapper library for Erlang's array.",
      package: package,
      deps: deps]
   end

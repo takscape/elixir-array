@@ -1,8 +1,19 @@
 # Array
 
-An Elixir wrapper for Erlang's array.
+An Elixir wrapper library for Erlang's array.
 
 Supports Access, Enumerable and Collectable protocols.
+
+## Using Array with Mix
+To use array in your projects, add array as a dependency:
+
+```
+def deps do
+  [{:array, "~> 1.0.1"}]
+end
+```
+
+Then run `mix deps.get` to install it.
 
 ## Example
 
