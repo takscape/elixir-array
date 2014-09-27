@@ -15,6 +15,9 @@ end
 
 Then run `mix deps.get` to install it.
 
+## Documentation
+http://code.void.in/docs/elixir-array/
+
 ## Example
 
 ```
