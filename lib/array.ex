@@ -95,20 +95,13 @@ defmodule Array do
     do: :array.foldr(fun, acc, c)
 
   @doc """
-  Equivalent to `from_list(list, nil)`.
-  """
-  @spec from_list(list) :: t
-  def from_list(list),
-    do: %Array{content: :array.from_list(list, nil)}
-
-  @doc """
   Converts a list to an extendible array.
   `default` is used as the value for uninitialized entries of the array.
 
   If `list` is not a proper list, the call raises `ArgumentError`.
   """
   @spec from_list(list, any) :: t
-  def from_list(list, default),
+  def from_list(list, default \\ nil),
     do: %Array{content: :array.from_list(list, default)}
 
   @doc """
