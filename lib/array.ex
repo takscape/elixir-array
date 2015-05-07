@@ -105,13 +105,6 @@ defmodule Array do
     do: %Array{content: :array.from_list(list, default)}
 
   @doc """
-  Equivalent to `from_orddict(orddict, nil)`.
-  """
-  @spec from_orddict(orddict) :: t
-  def from_orddict(orddict),
-    do: %Array{content: :array.from_orddict(orddict, nil)}
-
-  @doc """
   Converts an ordered list of pairs `{index, value}` to a corresponding extendible array.
   `default` is used as the value for uninitialized entries of the array.
 
@@ -119,7 +112,7 @@ defmodule Array do
   the call raises `ArgumentError`.
   """
   @spec from_orddict(orddict, any) :: t
-  def from_orddict(orddict, default),
+  def from_orddict(orddict, default \\ nil),
     do: %Array{content: :array.from_orddict(orddict, default)}
 
   @doc """
