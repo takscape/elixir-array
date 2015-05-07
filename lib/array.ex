@@ -12,15 +12,6 @@ defmodule Array do
   @type orddict :: [{index, element}]
 
   @doc """
-  Creates a new, extendible array with initial size zero.
-  The default value is the atom nil, not undefined.
-  """
-  @spec new() :: t 
-  def new() do
-    %Array{content: :array.new({:default, nil})}
-  end
-
-  @doc """
   Creates a new fixed array according to the given options.
   By default, the array is extendible and has initial size zero.
   The default value is the atom nil, if not specified.
@@ -38,7 +29,7 @@ defmodule Array do
       * Sets the default value for the array to `value`.
   """
   @spec new(opts) :: t
-  def new(options) do
+  def new(options \\ []) do
     if is_list(options) do
       %Array{content: :array.new([{:default, nil} | options])}
     else
