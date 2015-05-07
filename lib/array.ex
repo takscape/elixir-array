@@ -12,15 +12,6 @@ defmodule Array do
   @type orddict :: [{index, element}]
 
   @doc """
-  Creates a new, extendible array with initial size zero.
-  The default value is the atom nil, not undefined.
-  """
-  @spec new() :: t 
-  def new() do
-    %Array{content: :array.new({:default, nil})}
-  end
-
-  @doc """
   Creates a new fixed array according to the given options.
   By default, the array is extendible and has initial size zero.
   The default value is the atom nil, if not specified.
@@ -38,7 +29,7 @@ defmodule Array do
       * Sets the default value for the array to `value`.
   """
   @spec new(opts) :: t
-  def new(options) do
+  def new(options \\ []) do
     if is_list(options) do
       %Array{content: :array.new([{:default, nil} | options])}
     else
@@ -104,28 +95,14 @@ defmodule Array do
     do: :array.foldr(fun, acc, c)
 
   @doc """
-  Equivalent to `from_list(list, nil)`.
-  """
-  @spec from_list(list) :: t
-  def from_list(list),
-    do: %Array{content: :array.from_list(list, nil)}
-
-  @doc """
   Converts a list to an extendible array.
   `default` is used as the value for uninitialized entries of the array.
 
   If `list` is not a proper list, the call raises `ArgumentError`.
   """
   @spec from_list(list, any) :: t
-  def from_list(list, default),
+  def from_list(list, default \\ nil),
     do: %Array{content: :array.from_list(list, default)}
-
-  @doc """
-  Equivalent to `from_orddict(orddict, nil)`.
-  """
-  @spec from_orddict(orddict) :: t
-  def from_orddict(orddict),
-    do: %Array{content: :array.from_orddict(orddict, nil)}
 
   @doc """
   Converts an ordered list of pairs `{index, value}` to a corresponding extendible array.
@@ -135,7 +112,7 @@ defmodule Array do
   the call raises `ArgumentError`.
   """
   @spec from_orddict(orddict, any) :: t
-  def from_orddict(orddict, default),
+  def from_orddict(orddict, default \\ nil),
     do: %Array{content: :array.from_orddict(orddict, default)}
 
   @doc """
