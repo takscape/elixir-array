@@ -346,20 +346,6 @@ defmodule Array do
     do: :array.to_orddict(c)
 end
 
-defimpl Access, for: Array do
-  def fetch(arr, idx) do
-    Array.fetch(arr, idx)
-  end
-
-  def get(arr, idx, default \\ nil) do
-    Array.get(arr, idx, default)
-  end
-
-  def get_and_update(arr, idx, fun) do
-    Array.get_and_update(arr, idx, fun)
-  end
-end
-
 defimpl Enumerable, for: Array do
   def count(arr), do: {:ok, Array.size(arr)}
 
