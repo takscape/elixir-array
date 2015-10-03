@@ -155,7 +155,7 @@ defmodule Array do
 
   @doc """
   Gets the value of entry `idx`. If `idx` is not a nonnegative integer, or if the array has
-  fixed size and `idx` is larger than the maximum index, the returns raises :error
+  fixed size and `idx` is larger than the maximum index, the call returns :error
   """
   @spec fetch(t, index) :: element
   def fetch(%Array{content: c}, idx) do
@@ -167,7 +167,7 @@ defmodule Array do
 
   @doc """
   Gets the value of entry `idx`. If `idx` is not a nonnegative integer, or if the array has
-  fixed size and `idx` is larger than the maximum index it returns default value.
+  fixed size and `idx` is larger than the maximum index it returns `default` or array's default value.
   """
   @spec get(t, index, any) :: element
   def get(array, idx, default \\ nil) do
