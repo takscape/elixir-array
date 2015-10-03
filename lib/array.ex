@@ -15,7 +15,7 @@ defmodule Array do
   Creates a new, extendible array with initial size zero.
   The default value is the atom nil, not undefined.
   """
-  @spec new() :: t 
+  @spec new() :: t
   def new() do
     %Array{content: :array.new({:default, nil})}
   end
@@ -85,7 +85,7 @@ defmodule Array do
 
   @doc """
   Folds the elements of the array using the given function and initial accumulator value.
-  The elements are visited in order from the lowest index to the highest. 
+  The elements are visited in order from the lowest index to the highest.
 
   If `fun` is not a function, the call raises `ArgumentError`.
   """
@@ -96,7 +96,7 @@ defmodule Array do
   @doc """
   Folds the elements of the array right-to-left using the given function and initial accumulator value.
   The elements are visited in order from the highest index to the lowest.
- 
+
   If `fun` is not a function, the call raises `ArgumentError`.
   """
   @spec foldr(t, acc, (index, element, acc -> acc)) :: acc when acc: var
@@ -155,11 +155,35 @@ defmodule Array do
 
   @doc """
   Gets the value of entry `idx`. If `idx` is not a nonnegative integer, or if the array has
-  fixed size and `idx` is larger than the maximum index, the call raises `ArgumentError`.
+  fixed size and `idx` is larger than the maximum index, the returns raises :error
   """
-  @spec get(t, index) :: element
-  def get(%Array{content: c}, idx),
-    do: :array.get(idx, c)
+  @spec fetch(t, index) :: element
+  def fetch(%Array{content: c}, idx) do
+    cond do
+      idx in 0..(:array.size(c) - 1) -> {:ok, :array.get(idx, c)}
+      true -> :error
+    end
+  end
+
+  @doc """
+  Gets the value of entry `idx`. If `idx` is not a nonnegative integer, or if the array has
+  fixed size and `idx` is larger than the maximum index it returns default value.
+  """
+  @spec get(t, index, any) :: element
+  def get(array, idx, default \\ nil) do
+    case Array.fetch(array, idx) do
+      {:ok, value} -> value
+      :error -> default || Array.default(array)
+    end
+  end
+
+  @doc """
+  Gets and updates the container’s value for the given key, in a single pass.
+  """
+  def get_and_update(arr, idx, fun) do
+    {get, update} = fun.(Array.get(arr, idx))
+    {get, Array.set(arr, idx, update)}
+  end
 
   @doc """
   Returns `true` if `arr` appears to be an array, otherwise `false`.
@@ -184,7 +208,7 @@ defmodule Array do
   @doc """
   Maps the given function onto each element of the array.
   The elements are visited in order from the lowest index to the highest.
- 
+
   If `fun` is not a function, the call raises `ArgumentError`.
   """
   @spec map(t, (index, element -> any)) :: t
@@ -260,7 +284,7 @@ defmodule Array do
   Folds the elements of the array right-to-left using the given function and initial accumulator value,
   skipping default-valued entries.
   The elements are visited in order from the highest index to the lowest.
- 
+
   If `fun` is not a function, the call raises `ArgumentError`.
   """
   @spec sparse_foldr(t, acc, (index, element, acc -> acc)) :: acc when acc: var
@@ -270,7 +294,7 @@ defmodule Array do
   @doc """
   Maps the given function onto each element of the array, skipping default-valued entries.
   The elements are visited in order from the lowest index to the highest.
- 
+
   If `fun` is not a function, the call raises `ArgumentError`.
   """
   @spec sparse_map(t, (element -> any)) :: t
@@ -323,13 +347,16 @@ defmodule Array do
 end
 
 defimpl Access, for: Array do
-  def get(arr, idx) do
-    Array.get(arr, idx)
+  def fetch(arr, idx) do
+    Array.fetch(arr, idx)
+  end
+
+  def get(arr, idx, default \\ nil) do
+    Array.get(arr, idx, default)
   end
 
   def get_and_update(arr, idx, fun) do
-    {get, update} = fun.(Array.get(arr, idx))
-    {get, Array.set(arr, idx, update)}
+    Array.get_and_update(arr, idx, fun)
   end
 end
 
