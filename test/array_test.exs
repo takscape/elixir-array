@@ -309,6 +309,10 @@ defmodule ArrayTest do
     end
     assert nil == Array.get(a, -1)
     assert :error == Array.fetch(a, -1)
+
+    a = Array.from_list([])
+    assert :error == Array.fetch(a, 0)
+    assert 0 == Array.get(a, 0, 0)
   end
 
   test "size" do
@@ -423,7 +427,7 @@ defmodule ArrayTest do
     assert [{0, 1}, {1, 2}, {2, 3}] == Array.to_orddict(a)
   end
 
-  test "Access.get" do
+  test "Access.fetch" do
     a = Array.from_list([1,2,3])
     assert 1 == a[0]
     assert 2 == a[1]

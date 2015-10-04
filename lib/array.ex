@@ -160,6 +160,7 @@ defmodule Array do
   @spec fetch(t, index) :: element
   def fetch(%Array{content: c}, idx) do
     cond do
+      :array.size(c) == 0 -> :error
       idx in 0..(:array.size(c) - 1) -> {:ok, :array.get(idx, c)}
       true -> :error
     end
