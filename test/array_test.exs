@@ -27,9 +27,7 @@ defmodule ArrayTest do
 
     assert nil == Array.get(a, 9)
 
-    assert_raise ArgumentError, fn ->
-      Array.get(a, 10)
-    end
+    assert nil == Array.get(a, 10)
 
     a = Array.set(a, 0, 1)
     assert 1 == Array.get(a, 0)
@@ -87,7 +85,7 @@ defmodule ArrayTest do
   test "fix" do
     a = Array.new()
     a = Array.set(a, 100, 0)
-    
+
     a = Array.fix(a)
     assert_raise ArgumentError, fn ->
       Array.set(a, 101, 0)
@@ -293,22 +291,28 @@ defmodule ArrayTest do
     end
   end
 
-  test "get/set" do
+  test "get/fetch/set" do
     a = Array.new()
 
     a = Array.set(a, 5, 10)
     assert nil == Array.get(a, 4)
+    assert {:ok, nil} == Array.fetch(a, 4)
     assert 10 == Array.get(a, 5)
+    assert {:ok, 10} == Array.fetch(a, 5)
     assert nil == Array.get(a, 6)
+    assert :error == Array.fetch(a, 6)
 
     a = Array.set(a, 0, 100)
     assert 100 == Array.get(a, 0)
     assert_raise ArgumentError, fn ->
       Array.set(a, -1, 1000)
     end
-    assert_raise ArgumentError, fn ->
-      Array.get(a, -1)
-    end
+    assert nil == Array.get(a, -1)
+    assert :error == Array.fetch(a, -1)
+
+    a = Array.from_list([])
+    assert :error == Array.fetch(a, 0)
+    assert 0 == Array.get(a, 0, 0)
   end
 
   test "size" do
@@ -405,7 +409,7 @@ defmodule ArrayTest do
   test "to_erlang_array" do
     a = Array.from_list([1,2,3])
     ea = Array.to_erlang_array(a)
-    
+
     assert :array.is_array(ea)
     assert 3 == :array.size(ea)
     assert 1 == :array.get(0, ea)
@@ -423,7 +427,7 @@ defmodule ArrayTest do
     assert [{0, 1}, {1, 2}, {2, 3}] == Array.to_orddict(a)
   end
 
-  test "Access.get" do
+  test "Access.fetch" do
     a = Array.from_list([1,2,3])
     assert 1 == a[0]
     assert 2 == a[1]
