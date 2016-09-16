@@ -1,4 +1,5 @@
 defmodule Array do
+  @behaviour Access
   @moduledoc """
   A wrapper module for Erlang's array.
   """
@@ -15,7 +16,7 @@ defmodule Array do
   Creates a new, extendible array with initial size zero.
   The default value is the atom nil, not undefined.
   """
-  @spec new() :: t 
+  @spec new() :: t
   def new() do
     %Array{content: :array.new({:default, nil})}
   end
@@ -85,7 +86,7 @@ defmodule Array do
 
   @doc """
   Folds the elements of the array using the given function and initial accumulator value.
-  The elements are visited in order from the lowest index to the highest. 
+  The elements are visited in order from the lowest index to the highest.
 
   If `fun` is not a function, the call raises `ArgumentError`.
   """
@@ -96,7 +97,7 @@ defmodule Array do
   @doc """
   Folds the elements of the array right-to-left using the given function and initial accumulator value.
   The elements are visited in order from the highest index to the lowest.
- 
+
   If `fun` is not a function, the call raises `ArgumentError`.
   """
   @spec foldr(t, acc, (index, element, acc -> acc)) :: acc when acc: var
@@ -184,7 +185,7 @@ defmodule Array do
   @doc """
   Maps the given function onto each element of the array.
   The elements are visited in order from the lowest index to the highest.
- 
+
   If `fun` is not a function, the call raises `ArgumentError`.
   """
   @spec map(t, (index, element -> any)) :: t
@@ -260,7 +261,7 @@ defmodule Array do
   Folds the elements of the array right-to-left using the given function and initial accumulator value,
   skipping default-valued entries.
   The elements are visited in order from the highest index to the lowest.
- 
+
   If `fun` is not a function, the call raises `ArgumentError`.
   """
   @spec sparse_foldr(t, acc, (index, element, acc -> acc)) :: acc when acc: var
@@ -270,7 +271,7 @@ defmodule Array do
   @doc """
   Maps the given function onto each element of the array, skipping default-valued entries.
   The elements are visited in order from the lowest index to the highest.
- 
+
   If `fun` is not a function, the call raises `ArgumentError`.
   """
   @spec sparse_map(t, (element -> any)) :: t
@@ -320,16 +321,45 @@ defmodule Array do
   @spec to_orddict(t) :: [{index, element}]
   def to_orddict(%Array{content: c}),
     do: :array.to_orddict(c)
-end
 
-defimpl Access, for: Array do
-  def get(arr, idx) do
-    Array.get(arr, idx)
+  @doc """
+  Access behavior `fetch/2` callback.
+  """
+  def fetch(arr, idx) do
+    {:ok, get(arr, idx)}
   end
 
+  @doc """
+  Access behavior `get/3` callback
+  """
+  def get(arr, idx, value) do
+    if size(arr) < idx do
+      get(arr, idx)
+    else
+      value
+    end
+  end
+
+  @doc """
+  Access behavior `get_and_update/3` callback
+  """
   def get_and_update(arr, idx, fun) do
-    {get, update} = fun.(Array.get(arr, idx))
-    {get, Array.set(arr, idx, update)}
+    value = get(arr, idx)
+    case fun.(value) do
+      {get, update} -> {get, set(arr, idx, update)}
+      :pop          -> {value, set(arr, idx, nil)}
+    end
+  end
+
+  @doc """
+  Access behavior `pop/2` callback
+  """
+  def pop(arr, idx) do
+    if size(arr) < idx do
+      {get(arr, idx), set(arr, idx, nil)}
+    else
+      {nil, arr}
+    end
   end
 end
 
