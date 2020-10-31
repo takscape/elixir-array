@@ -3,8 +3,8 @@ defmodule Array.Mixfile do
 
   def project do
     [app: :elixir_array,
-     version: "1.0.1",
-     elixir: ">= 1.0.0",
+     version: "2.1.0",
+     elixir: ">= 1.11.1",
      description: "An elixir wrapper library for Erlang's array.",
      package: package(),
      deps: deps()]
