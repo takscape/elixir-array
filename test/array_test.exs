@@ -87,7 +87,7 @@ defmodule ArrayTest do
   test "fix" do
     a = Array.new()
     a = Array.set(a, 100, 0)
-    
+
     a = Array.fix(a)
     assert_raise ArgumentError, fn ->
       Array.set(a, 101, 0)
@@ -405,7 +405,7 @@ defmodule ArrayTest do
   test "to_erlang_array" do
     a = Array.from_list([1,2,3])
     ea = Array.to_erlang_array(a)
-    
+
     assert :array.is_array(ea)
     assert 3 == :array.size(ea)
     assert 1 == :array.get(0, ea)
@@ -452,6 +452,14 @@ defmodule ArrayTest do
   test "Enumerable.reduce" do
     sum = Enum.reduce(Array.from_list([1,2,3]), 0, fn(x, acc) -> x + acc end)
     assert 6 == sum
+  end
+
+  test "Enumerable.slice" do
+    slice = Enum.slice(Array.from_list([1,2,3,4,5]), 1, 2)
+    assert [2,3] == slice
+
+    slice = Enum.slice(Array.from_list([1,2,3,4,5]), 3, 1)
+    assert [4] == slice
   end
 
   test "Collectable.into" do
