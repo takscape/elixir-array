@@ -2,7 +2,7 @@ defmodule Array.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :array,
+    [app: :elixir_array,
      version: "1.0.1",
      elixir: ">= 1.0.0",
      description: "An elixir wrapper library for Erlang's array.",
